@@ -7,60 +7,128 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About Laravel
+## Laravel 11 REST API Authentication with JWT
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+This project is a starter template for building a Laravel 11 REST API with JWT (JSON Web Token) authentication. It provides endpoints for user login, retrieving user information, refreshing tokens, and logging out. The project is intended to serve as a boilerplate and has been uploaded to GitHub as a public repository.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Table of Contents
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- [Installation](#installation)
+- [Endpoints](#endpoints)
 
-## Learning Laravel
+## Installation
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/rivan-codes/laravel11-api.git
+    ```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+2. Navigate to the project directory:
+    ```bash
+    cd laravel-api-jwt-starter
+    ```
+3. Install the required dependencies using Composer::
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+   ```bash
+   composer install
+    ```
+4. Set up your environment variables by copying the `.env.example` file:
+   ```bash
+   cp .env.example .env
+    ```
 
-## Laravel Sponsors
+5. Generate a new application key:
+    ```bash
+    php artisan key:generate
+    ```
+6. Configure your database connection in the `.env` file.
+7. Run the migrations:
+    ```bash
+    php artisan migrate --seed
+    ```
+8. Generate a JWT secret key:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+   ```bash
+   php artisan jwt:secret
+    ```
+## Endpoints
 
-### Premium Partners
+| Method   |      Endpoint      |  Description                             |
+|----------|--------------------|------------------------------------------|
+| POST     | /api/login         | User login and token generation          |
+| GET      | /api/profile       | Get current user information             |
+| POST     | /api/logout	    | Invalidate the current token and log out |
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+#### User Login
+Use this endpoint to authenticate a user and generate an access token. Provide the user's email and password in the request body. If the credentials are valid, the API will respond with the user's information along with an access token that can be used for subsequent requests.
 
-## Contributing
+##### Request Body:
+```http
+POST /api/user/login HTTP/1.1
+Host: localhost:8000
+Content-Type: application/json
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+{
+    "email": "rivan@mail.com",
+    "password": "12345"
+}
+```
 
-## Code of Conduct
+##### Response:
+```json
+{
+    "status": true,
+    "message": "Login User",
+    "data": {
+        "access_token": "{{ token }}",
+        "token_type": "bearer"
+    },
+    "meta": null
+}
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+#### Get Current Authenticated User Information
+Use this endpoint to fetch information about the currently authenticated user. Include the access token in the request headers. The API will respond with the user's details.
 
-## Security Vulnerabilities
+##### Request Body:
+```http
+GET /api/user/profile HTTP/1.1
+Host: localhost:8000
+Content-Type: application/json
+Authorization: Bearer <token>
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+##### Response:
+```json
+{
+    "status": true,
+    "message": "Profile",
+    "data": {
+        "id": 1,
+        "name": "Rivan Nurdin",
+        "email": "rivan@mail.com"
+    },
+    "meta": null
+}
+```
 
-## License
+#### Logout
+Use this endpoint to invalidate the current access token and log out the user. Include the access token in the request headers. After logging out, the token will no longer be valid for making authenticated requests.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+##### Request Body:
+```http
+POST /api/user/logout HTTP/1.1
+Host: localhost:8000
+Content-Type: application/json
+Authorization: Bearer <token>
+```
+
+##### Response:
+```json
+{
+    "status": true,
+    "message": "Logout",
+    "data": null,
+    "meta": null
+}
+```
