@@ -9,7 +9,7 @@
 
 ## Laravel 11 REST API Authentication with JWT
 
-This project is a starter template for building a Laravel 11 REST API with JWT (JSON Web Token) authentication. It provides endpoints for user login, retrieving user information, refreshing tokens, and logging out. The project is intended to serve as a boilerplate and has been uploaded to GitHub as a public repository.
+This project is a starter template for building a Laravel 11 REST API with JWT (JSON Web Token) authentication. It provides endpoints for user login, retrieving user information, and logging out. The project is intended to serve as a boilerplate and has been uploaded to GitHub as a public repository.
 
 ## Table of Contents
 
