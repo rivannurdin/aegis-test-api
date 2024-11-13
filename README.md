@@ -69,7 +69,7 @@ Host: localhost:8000
 Content-Type: application/json
 
 {
-    "email": "rivan@mail.com",
+    "email": "user@mail.com",
     "password": "12345"
 }
 ```
@@ -105,8 +105,8 @@ Authorization: Bearer <token>
     "message": "Profile",
     "data": {
         "id": 1,
-        "name": "Rivan Nurdin",
-        "email": "rivan@mail.com"
+        "name": "User 1",
+        "email": "user@mail.com"
     },
     "meta": null
 }
