@@ -12,3 +12,11 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
         Route::post('logout', 'LogoutController');
     });
 });
+
+Route::group(['prefix' => 'product', 'middleware' => 'auth', 'namespace' => 'Product'], function () {
+    Route::get('list', 'ListController');
+    Route::get('detail', 'DetailController');
+    Route::post('create', 'CreateController');
+    Route::post('update', 'UpdateController');
+    Route::delete('delete', 'DeleteController');
+});
