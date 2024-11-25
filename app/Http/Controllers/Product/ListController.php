@@ -11,18 +11,21 @@ class ListController extends Controller
 {
     public function __invoke(Request $request)
     {
-        $models = Product::orderby('created_at', 'DESC')->get();
+        $query = Product::where(function($query) use ($request){
+            if ($request->filled('search')) {
+                $query->where('name', 'ILIKE', "{$request->search}%");
+            }
+        })->orderby('id', 'desc');
 
-        $data = [];
-        foreach ($models as $model) {
-            $data[] = [
-                'id'    => $model->id,
-                'code'  => $model->code,
-                'name'  => $model->name,
-                'stock' => $model->stock,
-            ];
-        }
+        /** @var \Illuminate\Pagination\CursorPaginator $model */
+        $model = $query->cursorPaginate($request->limit);
+        $model = $model->through(fn ($item) => [
+            'id'    => $item->id,
+            'code'  => $item->code,
+            'name'  => $item->name,
+            'stock' => $item->stock,
+        ]);
 
-        return $this->trueResponse('List Product', $data);
+        return $this->trueResponse('List Product', $model);
     }
 }
