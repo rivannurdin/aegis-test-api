@@ -23,4 +23,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('delete', 'DeleteController');
     }); 
 
+    Route::group(['prefix' => 'transaction', 'namespace' => 'Transaction'], function () {
+        Route::get('list', 'ListController');
+        Route::get('detail', 'DetailController');
+        Route::post('create', 'CreateController');
+        Route::post('refund', 'RefundController');
+    }); 
 });

@@ -63,8 +63,6 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response()->json(['message' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
             } elseif ($e instanceof NotFoundHttpException) {
                 return response()->json(['message' => 'Resource not found'], Response::HTTP_NOT_FOUND);
-            } else {
-                return response()->json(['message' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
         });
     })->create();
