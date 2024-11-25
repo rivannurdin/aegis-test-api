@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
 
 Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
     Route::post('login', 'LoginController');
@@ -13,10 +14,13 @@ Route::group(['prefix' => 'auth', 'namespace' => 'Auth'], function () {
     });
 });
 
-Route::group(['prefix' => 'product', 'middleware' => 'auth', 'namespace' => 'Product'], function () {
-    Route::get('list', 'ListController');
-    Route::get('detail', 'DetailController');
-    Route::post('create', 'CreateController');
-    Route::post('update', 'UpdateController');
-    Route::delete('delete', 'DeleteController');
+Route::group(['middleware' => 'auth'], function () {
+    Route::group(['prefix' => 'product', 'middleware' => ['role:' . User::ADMIN_ROLE], 'namespace' => 'Product'], function () {
+        Route::get('list', 'ListController');
+        Route::get('detail', 'DetailController');
+        Route::post('create', 'CreateController');
+        Route::post('update', 'UpdateController');
+        Route::delete('delete', 'DeleteController');
+    }); 
+
 });

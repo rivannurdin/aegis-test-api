@@ -3,45 +3,31 @@
 return [
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'admin'),
-        'passwords' => 'admin',
+        'guard' => env('AUTH_GUARD', 'user'),
+        'passwords' => 'user',
     ],
 
     'guards' => [
-        'admin' => [
+        'user' => [
             'driver' => 'jwt',
-            'provider' => 'admin',
-        ],
-        'cashier' => [
-            'driver' => 'jwt',
-            'provider' => 'cashier'
+            'provider' => 'user',
         ]
     ],
 
     'providers' => [
-        'admin' => [
+        'user' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'cashier' => [
-            'driver' => 'eloquent',
-            'model' => App\Models\User::class,
-        ]
     ],
 
     'passwords' => [
-        'admin' => [
+        'user' => [
             'provider' => 'user',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
-        'cashier' => [
-            'provider' => 'cashier',
-            'table' => 'password_resets',
-            'expire' => 60,
-            'throttle' => 60,
-        ]
     ],
 
     'password_timeout' => 10800,
