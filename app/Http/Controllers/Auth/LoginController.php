@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
@@ -23,7 +23,7 @@ class LoginController extends Controller
         ];
 
         $token = null;
-        if(!$token = Auth::guard('user')->attempt($credentials)){
+        if(!$token = Auth::guard()->attempt($credentials)){
             return $this->falseResponse(__('auth.failed'));
         }
 

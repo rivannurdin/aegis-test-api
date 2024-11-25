@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User\Auth;
+namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -10,13 +10,13 @@ class LogoutController extends Controller
 {
     public function __invoke()
     {
-        $user = Auth::guard('user')->user();
+        $user = Auth::guard()->user();
 
         if (!$user) {
             return $this->trueResponse('Logout');
         }
 
-        Auth::guard('user')->logout();
+        Auth::guard()->logout();
 
         return $this->trueResponse('Logout');
     }

@@ -10,6 +10,34 @@ class User extends Authenticatable implements JWTSubject
 {
     use Notifiable;
 
+    const ADMIN_ROLE   = 1;
+    const CASHIER_ROLE = 2;
+
+    const STATUS_ACTIVE   = 1;
+    const STATUS_INACTIVE = 0;
+
+    const ROLES = [
+        self::ADMIN_ROLE => [
+            'value' => self::ADMIN_ROLE,
+            'label' => 'Admin'
+        ],
+        self::CASHIER_ROLE => [
+            'value' => self::CASHIER_ROLE,
+            'label' => 'Admin'
+        ]
+    ];
+
+    const STATUS = [
+        self::STATUS_ACTIVE => [
+            'value' => self::STATUS_ACTIVE,
+            'label' => 'Active'
+        ],
+        self::STATUS_INACTIVE => [
+            'value' => self::STATUS_INACTIVE,
+            'label' => 'Inactive'
+        ]
+    ];
+
     protected $table = 'users';
 
     /**
@@ -42,5 +70,10 @@ class User extends Authenticatable implements JWTSubject
     public function routeNotificationForMail($notification)
     {
         return $this->email;
+    }
+
+    public function role()
+    {
+        return $this->role_id;
     }
 }

@@ -11,21 +11,16 @@
 
 This project is a starter template for building a Laravel 11 REST API with JWT (JSON Web Token) authentication. It provides endpoints for user login, retrieving user information, and logging out. The project is intended to serve as a boilerplate and has been uploaded to GitHub as a public repository.
 
-## Table of Contents
-
-- [Installation](#installation)
-- [Endpoints](#endpoints)
-
 ## Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/rivan-codes/laravel11-api.git
+   git clone https://github.com/rivan-codes/aegis-test-api.git
     ```
 
 2. Navigate to the project directory:
     ```bash
-    cd laravel-api-jwt-starter
+    cd aegis-test-api
     ```
 3. Install the required dependencies using Composer::
 
@@ -51,84 +46,8 @@ This project is a starter template for building a Laravel 11 REST API with JWT (
    ```bash
    php artisan jwt:secret
     ```
-## Endpoints
+8. Generate a JWT secret key:
 
-| Method   |      Endpoint      |  Description                             |
-|----------|--------------------|------------------------------------------|
-| POST     | /api/login         | User login and token generation          |
-| GET      | /api/profile       | Get current user information             |
-| POST     | /api/logout	    | Invalidate the current token and log out |
-
-#### User Login
-Use this endpoint to authenticate a user and generate an access token. Provide the user's email and password in the request body. If the credentials are valid, the API will respond with the user's information along with an access token that can be used for subsequent requests.
-
-##### Request Body:
-```http
-POST /api/user/login HTTP/1.1
-Host: localhost:8000
-Content-Type: application/json
-
-{
-    "email": "user@mail.com",
-    "password": "12345"
-}
-```
-
-##### Response:
-```json
-{
-    "status": true,
-    "message": "Login User",
-    "data": {
-        "access_token": "{{ token }}",
-        "token_type": "bearer"
-    },
-    "meta": null
-}
-```
-
-#### Get Current Authenticated User Information
-Use this endpoint to fetch information about the currently authenticated user. Include the access token in the request headers. The API will respond with the user's details.
-
-##### Request Body:
-```http
-GET /api/user/profile HTTP/1.1
-Host: localhost:8000
-Content-Type: application/json
-Authorization: Bearer <token>
-```
-
-##### Response:
-```json
-{
-    "status": true,
-    "message": "Profile",
-    "data": {
-        "id": 1,
-        "name": "User 1",
-        "email": "user@mail.com"
-    },
-    "meta": null
-}
-```
-
-#### Logout
-Use this endpoint to invalidate the current access token and log out the user. Include the access token in the request headers. After logging out, the token will no longer be valid for making authenticated requests.
-
-##### Request Body:
-```http
-POST /api/user/logout HTTP/1.1
-Host: localhost:8000
-Content-Type: application/json
-Authorization: Bearer <token>
-```
-
-##### Response:
-```json
-{
-    "status": true,
-    "message": "Logout",
-    "data": null,
-    "meta": null
-}
-```
+   ```bash
+   php artisan serve
+    ```

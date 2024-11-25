@@ -23,13 +23,8 @@ return Application::configure(basePath: dirname(__DIR__))
         using: function () {
             Route::middleware('api')
                 ->prefix('api')
+                ->namespace('App\\Http\\Controllers')
                 ->group(base_path('routes/api.php'));
-
-            Route::middleware('api')
-                ->prefix('api/user')
-                ->namespace('App\\Http\\Controllers\\User')
-                ->group(base_path('routes/user.php'));
-     
             Route::middleware('web')
                 ->group(base_path('routes/web.php'));
         },

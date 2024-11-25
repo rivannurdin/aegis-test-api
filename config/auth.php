@@ -3,50 +3,45 @@
 return [
 
     'defaults' => [
-        'guard' => env('AUTH_GUARD', 'user'),
-        'passwords' => 'user',
+        'guard' => env('AUTH_GUARD', 'admin'),
+        'passwords' => 'admin',
     ],
-
 
     'guards' => [
-        'user' => [
+        'admin' => [
             'driver' => 'jwt',
-            'provider' => 'user',
+            'provider' => 'admin',
         ],
-
-        // 'authority' => [
-        //     'driver' => 'jwt',
-        //     'provider' => 'authority'
-        // ]
+        'cashier' => [
+            'driver' => 'jwt',
+            'provider' => 'cashier'
+        ]
     ],
 
-
     'providers' => [
-        'user' => [
+        'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-
-        // 'authority' => [
-        //     'driver' => 'eloquent',
-        //     'model' => App\Models\Authority::class,
-        // ]
+        'cashier' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\User::class,
+        ]
     ],
 
     'passwords' => [
-        'user' => [
+        'admin' => [
             'provider' => 'user',
             'table' => 'password_resets',
             'expire' => 60,
             'throttle' => 60,
         ],
-
-        // 'authority' => [
-        //     'provider' => 'authority',
-        //     'table' => 'password_resets',
-        //     'expire' => 60,
-        //     'throttle' => 60,
-        // ]
+        'cashier' => [
+            'provider' => 'cashier',
+            'table' => 'password_resets',
+            'expire' => 60,
+            'throttle' => 60,
+        ]
     ],
 
     'password_timeout' => 10800,
