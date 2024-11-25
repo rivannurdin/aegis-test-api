@@ -53,56 +53,18 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (Throwable $e, Request $request) {
-            $headers = [
-                'Access-Control-Allow-Origin'      => '*',
-                'Access-Control-Allow-Methods'     => 'POST, GET, OPTIONS, PUT, DELETE',
-                'Access-Control-Allow-Credentials' => 'true',
-                'Access-Control-Max-Age'           => '86400',
-                'Access-Control-Allow-Headers'     => 'Content-Type, Content-Disposition, Cache-Control, Authorization, X-Requested-With, X-CSRF-TOKEN, Access-Control-Expose-Headers, X-Timezone, X-Localization, Access-Control-Request-Headers, Access-Control-Request-Method',
-            ];
-    
-            $code = Response::HTTP_INTERNAL_SERVER_ERROR;
-            
-            if ($e instanceof HttpResponseException) {
-                if (env('APP_DEBUG')) return response()->json([
-                    'message' => $e->getMessage(),
-                    'file' => $e->getFile(),
-                    'line' => $e->getLine(),
-                    'code' => $e->getCode(),
-                ], $code, $headers);
-            } elseif ($e instanceof MethodNotAllowedException) {
-                $code = Response::HTTP_METHOD_NOT_ALLOWED;
-            } elseif ($e instanceof NotFoundHttpException || $e instanceof ModelNotFoundException) {
-                $code = Response::HTTP_NOT_FOUND;
+            if ($e instanceof AuthenticationException) {
+                return response()->json(['message' => 'Authentication failed'], Response::HTTP_UNAUTHORIZED);
             } elseif ($e instanceof AccessDeniedHttpException) {
-                $code = Response::HTTP_FORBIDDEN;
-            } elseif ($e instanceof AuthenticationException) {
-                $code = Response::HTTP_UNAUTHORIZED;
-            } elseif ($e instanceof ValidationException) {
-                $errorBag = [];
-                $message  = $e->getMessage();
-                foreach ($e->errors() as $key => $value) $errorBag[] = ['attribute' => $key, 'text' => $value[0]];
-                if (!empty($errorBag)) {
-                    $message = $errorBag[0]['text'];
-                }
-                return response()->json([
-                    'status'  => false,
-                    'message' => $message,
-                    'data'    => (object)[],
-                    'meta'    => (object)[],
-                    'error'   => $errorBag
-                ], Response::HTTP_OK);
+                return response()->json(['message' => 'Access denied'], Response::HTTP_FORBIDDEN);
+            } elseif ($e instanceof ModelNotFoundException) {
+                return response()->json(['message' => 'Resource not found'], Response::HTTP_NOT_FOUND);
+            } elseif ($e instanceof MethodNotAllowedException) {
+                return response()->json(['message' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
+            } elseif ($e instanceof NotFoundHttpException) {
+                return response()->json(['message' => 'Resource not found'], Response::HTTP_NOT_FOUND);
             } else {
-                if($e instanceof HttpResponseException) {
-                    if (env('APP_DEBUG')) return response()->json([
-                        'message' => $e->getMessage(),
-                        'file'    => $e->getFile(),
-                        'line'    => $e->getLine(),
-                        'code'    => $e->getCode(),
-                    ], $code, $headers);
-                }
+                return response()->json(['message' => 'An error occurred'], Response::HTTP_INTERNAL_SERVER_ERROR);
             }
-    
-            return response('', $code, $headers);
         });
     })->create();
