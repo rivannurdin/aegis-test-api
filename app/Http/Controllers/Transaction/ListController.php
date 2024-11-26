@@ -12,8 +12,12 @@ class ListController extends Controller
     public function __invoke(Request $request)
     {
         $query = Transaction::where(function($query) use ($request){
-            if ($request->filled('filterDate')) {
-                $query->whereDate('date', $request->filterDate);
+            if ($request->filled('filterStartDate')) {
+                $query->whereDate('date', '>=', $request->filterStartDate);
+            }
+        })->where(function($query) use ($request){
+            if ($request->filled('filterEndDate')) {
+                $query->whereDate('date', '<=', $request->filterEndDate);
             }
         })->orderby('date', 'desc');
 
