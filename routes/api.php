@@ -29,4 +29,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('create', 'CreateController');
         Route::post('refund', 'RefundController');
     }); 
+
+    Route::group(['prefix' => 'cashier', 'middleware' => ['role:' . User::ADMIN_ROLE], 'namespace' => 'Cashier'], function () {
+        Route::get('list', 'ListController');
+        Route::post('active', 'ActiveController');
+        Route::post('inactive', 'InactiveController');
+    }); 
 });
