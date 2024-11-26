@@ -27,6 +27,10 @@ class LoginController extends Controller
             return $this->falseResponse(__('auth.failed'));
         }
 
+        if (Auth::user()->status === User::STATUS_INACTIVE) {
+            return $this->falseResponse(__('auth.inactive'));
+        }
+
         return $this->trueResponse('Login User', [
             'access_token' => $token,
             'token_type'   => 'bearer',
